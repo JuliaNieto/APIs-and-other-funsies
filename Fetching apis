@@ -33,3 +33,66 @@ fetch('https://dog.ceo/api/breeds/image/random')
                 console.log(data)
                 document.getElementById("activity-name").textContent = data.activity
             })
+
+-------START TO BUILD THE APP---------------------
+----------------html-----------------------
+<html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <h1>BoredBot</h1>
+        <h4>Find something to do</h4>
+        <button id="activity-name"></button>
+        <script src="index.js"></script>
+    </body>
+</html>
+---------------CSS---------------------
+body {
+    /* uigradients.com */
+    background: #bdc3c7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Oxygen, sans-serif;
+}
+
+button {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: red;
+    border: 1px solid darkred;
+    cursor: pointer;
+}
+button:hover,
+button:focus{
+    background: #02AAB0;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #00CDAC, #02AAB0);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #00CDAC, #02AAB0); /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+transition: background-color 1s ;
+}
+
+
+
+.idea{
+    background: #E55D87;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #5FC3E4, #E55D87);  /* Chrome 10-25, Safari 5.1-6 */
+   background: linear-gradient(to right, #5FC3E4, #E55D87); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+----------------js---------------------
+
+document.getElementById('redirect-btn').addEventListener('click', function(){
+fetch("https://apis.scrimba.com/bored/api/activity")
+  .then(response=> response.json())
+  .then(data=> {
+    document.getElementById("activity-name").textContent = data.activity
+    })
+})
+
