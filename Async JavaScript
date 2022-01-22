@@ -1,0 +1,47 @@
+document.getElementById('newDeck').addEventListener('click',function(){
+    fetch('https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/')
+        .then(resp=>resp.json())
+        .then(data=>console.log(data))
+})
+
+
+
+/**
+ * Challenge: Define our anonymous callback function as a separate function, then
+ * pass it as the 2nd parameter to our `addEventListener`
+ */
+
+
+
+let newDeckCards = function() {
+     fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
+        .then(res => res.json())
+        .then(data => console.log(data))
+}
+document.getElementById("new-deck").addEventListener("click", newDeckCards) //No parenthesis here
+
+
+
+
+----------------USING SETTIMEOUT-------------------------------
+function greet(){
+    console.log('i finally ran')
+}
+setTimeout(greet, 2000)
+-----------------------ARRAY.FILTER----------------------------
+const peopleWithPets = people.filter(person => person.hasPet)
+
+CHECK OUT THIS  --> https://www.javascripttutorial.net/javascript-array-filter
+function areTheyAdults(){
+    let adults =[]
+    for(i=0; i< people.length; i++){
+        if (people[i].age >= 18){
+            adults.push(people[i])
+        }
+    }
+    console.log(adults)
+}
+
+areTheyAdults()
+
+
