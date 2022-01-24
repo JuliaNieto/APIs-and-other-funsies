@@ -45,3 +45,22 @@ function areTheyAdults(){
 areTheyAdults()
 
 
+function filterArray(array, callback){
+    const resultingArray =[]
+    for (let item of array){
+        const shouldBeIncluded = callback(item)
+        if (shouldBeIncluded){
+            resultingArray.push(item)
+        }
+    }
+    return resultingArray
+}
+
+
+// here the callback above is like an 'empty spot' for a function.
+// Hence we have to specify that we want a function there that returns
+// the persons of the array that have a pet
+const peopleWithPets = filterArray(people, function(person) {
+    return person.hasPet === true
+})
+
