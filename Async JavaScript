@@ -64,3 +64,17 @@ const peopleWithPets = filterArray(people, function(person) {
     return person.hasPet === true
 })
 
+const voting= voters.filter(voter => voter.voted).map(voter=>voter.email)
+
+
+
+
+
+
+
+
+
+
+
+
+
