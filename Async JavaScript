@@ -66,14 +66,109 @@ const peopleWithPets = filterArray(people, function(person) {
 
 const voting= voters.filter(voter => voter.voted).map(voter=>voter.email)
 
+----------------------
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <button id="new-deck">New Deck, Please!</button>
+        <div id="cards"></div>
+        <button id="draw-cards" class="draw">Draw</button>
+        <script src="index.js"></script>
+    </body>
+</html>
+
+---------------------
+html, body {
+    margin: 0;
+    padding: 0;
+    background-image: url("img/table.png");
+    font-family: "Exo 2", sans-serif;
+    height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+button {
+    background-color: #FFF100;
+    cursor: pointer;
+    border: none;
+}
+
+button#new-deck {
+    align-self: flex-start;
+    padding: 5px;
+}
+
+button.draw {
+    font-size: 1.2em;
+    padding: 5px;
+}
 
 
 
 
+---------------------
+
+let deckId
+const cardsContainer = document.getElementById("cards")
+let newDeck = document.getElementById("new-deck")
+let drawCards = document.getElementById("draw-cards")
+
+function handleClick() {
+    fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
+        .then(res => res.json())
+        .then(data => {
+            deckId = data.deck_id
+        })
+}
+
+newDeck.addEventListener("click", handleClick)
+
+drawCards.addEventListener("click", () => {
+    fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
+        .then(res => res.json())
+        .then(data => {
+            cardsContainer.children[0].innerHTML = `
+                <img src=${data.cards[0].image} class="card" />
+            `
+            cardsContainer.children[1].innerHTML = `
+                <img src=${data.cards[1].image} class="card" />
+            `
+            determineCardWinner(data.cards[0], data.cards[1])
+        })
+})
+
+function highCard(card1, card2){
+    console.log(card1.value)
+    console.log(card2.value)
+    if (card1.value < card2.value){
+        console.log("card 2 is bigger")
+    }
+    else if (card1.value == card2.value){
+        console.log("they the same")
+    }
+    else{
+        console.log("card 1 is bigger")
+    }
+}
 
 
-
-
+function determineCardWinner(card1, card2) {
+    const valueOptions = ["2", "3", "4", "5", "6", "7", "8", "9", 
+    "10", "JACK", "QUEEN", "KING", "ACE"]
+    const card1ValueIndex = valueOptions.indexOf(card1.value)
+    const card2ValueIndex = valueOptions.indexOf(card2.value)
+    console.log("card 1:", card1ValueIndex)
+    console.log("card 2:", card2ValueIndex)
+}
 
 
 
