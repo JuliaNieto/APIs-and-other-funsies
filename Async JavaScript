@@ -74,8 +74,14 @@ const voting= voters.filter(voter => voter.voted).map(voter=>voter.email)
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        <button id="new-deck">New Deck, Please!</button>
+        <div class="top">
+        <button id="new-deck">New Deck</button>
+         <p id="remaining"></p>
+        </div>
+        <h2 id="header">Game of War</h2>
+        <h3 id="computer-score">Computer Score: 0</h3>
         <div id="cards"></div>
+        <h3 id="my-score">My Score: 0</h3>
         <button id="draw-cards" class="draw">Draw</button>
         <script src="index.js"></script>
     </body>
@@ -94,6 +100,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color:white;
 }
 
 button {
@@ -112,21 +119,41 @@ button.draw {
     padding: 5px;
 }
 
+div.top{
+    display:flex;
+    align-self:flex-start;
+    
+}
 
+div.top >p{
+    margin:0;
+    margin-left:10px;
+}
+
+button:disabled{
+    cursor:not-allowed;
+}
 
 
 ---------------------
 
 let deckId
+let computerScore = 0
+let myScore = 0
 const cardsContainer = document.getElementById("cards")
 let newDeck = document.getElementById("new-deck")
 let drawCards = document.getElementById("draw-cards")
+const header = document.getElementById("header")
+const remainingText = document.getElementById("remaining")
+const computerScoreEl = document.getElementById("computer-score")
+const myScoreEl = document.getElementById("my-score")
 
 function handleClick() {
     fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
         .then(res => res.json())
         .then(data => {
             deckId = data.deck_id
+            remainingText.textContent = `Remaining Cards: ${data.remaining}` 
         })
 }
 
@@ -143,7 +170,24 @@ drawCards.addEventListener("click", () => {
                 <img src=${data.cards[1].image} class="card" />
             `
             determineCardWinner(data.cards[0], data.cards[1])
-        })
+            header.textContent = winnerText
+            remainingText.textContent = `Remaining Cards ${data.remaining}`
+           if (data.remaining === 0) {
+                drawCardBtn.disabled = true
+                if(computerScore > myScore){
+                    header.textContent = `Computer Wins!`
+                }
+                else if(myScore > computerScore){
+                     header.textContent = `You Win!`
+                }
+                else{
+                    header.textContent = "It's a tie game!"
+                }
+            }
+            
+       
+       })
+        
 })
 
 function highCard(card1, card2){
@@ -166,10 +210,18 @@ function determineCardWinner(card1, card2) {
     "10", "JACK", "QUEEN", "KING", "ACE"]
     const card1ValueIndex = valueOptions.indexOf(card1.value)
     const card2ValueIndex = valueOptions.indexOf(card2.value)
-    console.log("card 1:", card1ValueIndex)
-    console.log("card 2:", card2ValueIndex)
+    
+    if (card1ValueIndex > card2ValueIndex) {
+        computerScore ++
+        computerScoreEl.textContent = `Computer score: ${computerScore}`
+        return "Computer wins!"
+        
+    } else if (card1ValueIndex < card2ValueIndex) {
+        myScore ++
+        MyScoreEl.textContent = `My score: ${myScore}`
+        return "You wins!"
+    } else {
+        return "War!"
+    }
 }
-
-
-
 
