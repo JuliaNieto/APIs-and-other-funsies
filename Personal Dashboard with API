@@ -34,7 +34,37 @@ fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&que
         `
     })
     .catch(err => console.error(err))
-   
+// adding the current time on the dashboard, and updating it every second
+function dateSeconds(){
+const date = new Date()
+    document.getElementById("time").textContent = date.toLocaleTimeString("en-us", {timeStyle: "medium"})
+}
+
+ setInterval("dateSeconds()", 1000)
+
+// we first select the geolocation we are currently at, one we have the position we fetch the api for such position with the latitude and longitude and then we select the units
+// after we fetch the API we go and say that if the response is not okay we shall throw an error saying that the data is unavailable. 
+// if is okay we just return the data as JSON and we console log it
+navigator.geolocation.getCurrentPosition(position => {
+    fetch(`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial`)
+        .then(res => {
+            if (!res.ok) {
+                throw Error("Weather data not available")
+            }
+            return res.json()
+        })
+        .then(data => {
+            console.log(data)
+        })
+	.catch(err => console.error(err))
+});
+
+
+
+
+
+
+
 
     --------------------------html-----------------------------
     <html>
@@ -49,7 +79,7 @@ fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&que
                 <p>Weather here</p>
             </div>
             
-            <h1 class="time">TIME HERE</h1>
+            <h1 class="time" id="time">TIME HERE</h1>
             
             <p id="author"></p>
         </main>
