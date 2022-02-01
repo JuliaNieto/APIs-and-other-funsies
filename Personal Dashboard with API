@@ -46,7 +46,7 @@ const date = new Date()
 // after we fetch the API we go and say that if the response is not okay we shall throw an error saying that the data is unavailable. 
 // if is okay we just return the data as JSON and we console log it
 navigator.geolocation.getCurrentPosition(position => {
-    fetch(`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial`)
+    fetch(`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metricl`)
         .then(res => {
             if (!res.ok) {
                 throw Error("Weather data not available")
@@ -54,7 +54,15 @@ navigator.geolocation.getCurrentPosition(position => {
             return res.json()
         })
         .then(data => {
-            console.log(data)
+           const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+            document.getElementById("weather").innerHTML = `
+            <div id="temperature">
+                <img src=${iconUrl} />
+                <p>${Math.round(data.main.temp)}º</p>
+            </div>
+                <p>${data.name}</p>
+            
+            `
         })
 	.catch(err => console.error(err))
 });
@@ -67,20 +75,22 @@ navigator.geolocation.getCurrentPosition(position => {
 
 
     --------------------------html-----------------------------
-    <html>
+<html>
     <head>
+        <meta charset="UTF-8" />
         <link rel="stylesheet" href="index.css">
+        <title>Personal Dashboard</title>
     </head>
-    <body> <main>    
-            <div id="top" class="top">
+    <body>
+        <main>    
+            <div class="top">
                 <div id="crypto">
-                  <div id="crypto-top"></div>
+                    <div id="crypto-top"></div>
                 </div>
-                <p>Weather here</p>
+                <div id="weather"></div>
             </div>
             
-            <h1 class="time" id="time">TIME HERE</h1>
-            
+            <h1 id="time" class="time"></h1>
             <p id="author"></p>
         </main>
         <script src="index.js"></script>
@@ -88,66 +98,109 @@ navigator.geolocation.getCurrentPosition(position => {
 </html>
     
     -------------------css--------------------------
-*{
-  box-sizing:border-box;
-}
-html, body {
-    margin: 0;
-    padding: 0;
-}
+* {
+    box-sizing: border-box;
+}    
 
 body {
+    margin: 0;
     background: no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    color:white;
-    font-family: Arial, Helvetica, sans-serif;
-    text-shadow:0px 0px 20px #aaaaaa;
-}
-
-p#author-name{
     color: white;
-    position:fixed;
-    bottom: 0;
-    left:0;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 0px 0px 20px #242424;
 }
 
 main {
+    padding: 15px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-div.top{
-  display:flex;
-  justify-content:space-between;
+div.top {
+    display: flex;
+    justify-content: space-between;
 }
 
-h1.time{
-  text-align:center;
+h1.time {
+    text-align: center;
 }
 
-div#crypto{
-  font-size:1.3rem;
+div#crypto {
+    font-size: 1.3rem;
 }
 
-div#crypto > p{
-  margin:0;
- 
+div#crypto > p {
+    margin: 0;
 }
 
-
-div#crypto-top{
-    display:flex;
-    align-items:center;
+div#crypto-top {
+    display: flex;
+    align-items: center;
     margin-bottom: 5px;
 }
 
-#crypto-top span{
-    margin-left:10px;
+div#crypto-top > span {
+    margin-left: 10px;
 }
+
+div#weather {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-self: flex-start;
+}
+
+div#weather > img {
+    width: 70px;
+}
+
+p.weather-city {
+    width: 100%;
+    text-align: right;
+    margin: 0;
+    margin-top: -10px;
+}
+
+p.weather-temp {
+    margin: 0;
+    font-size: 1.7rem;
+    margin-left: -10px;
+}
+
+
+
+
+-----------------manifest.json-------------------------
+{
+    "manifest_version": 3,
+    "name": "Personal Dashboard",
+    "version": "1.0.0",
+    "description": "Just for practicing async JS",
+    "action": {
+        "default_icon": "icon.png"
+    },
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
